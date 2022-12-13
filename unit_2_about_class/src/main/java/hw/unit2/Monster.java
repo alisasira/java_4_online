@@ -4,13 +4,14 @@ import java.util.Random;
 public class Monster {
     private int id;
     private boolean isGood;
+    private static int ID_GENERATOR = 1;
 
     public Monster(){
         this(new Random().nextBoolean());
-        id = new Random().nextInt(100);
     }
 
     public Monster(boolean isGood) {
+        id = ID_GENERATOR++;
         this.isGood = isGood;
     }
 
