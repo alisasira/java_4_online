@@ -25,7 +25,7 @@ public class Monster {
 
     public boolean sendMessage (Monster recipient){
         if(recipient.isGood()) {
-            System.out.println("Message was send from Monster№" + id + " to Monster№" +recipient.getId());
+            System.out.println("Message was send from Monster#" + id + " to Monster#" +recipient.getId());
             return true;
         } else {
             return false;
