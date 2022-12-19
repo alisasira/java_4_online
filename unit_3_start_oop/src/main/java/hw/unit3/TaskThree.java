@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class TaskThree {
-    public static void main(String[] args) throws IOException {
+    public static void execute() throws IOException {
         System.out.println("Please, enter the lesson number from 1 to 10:");
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         int lessons = Integer.parseInt(bf.readLine());

@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public class TaskTwo {
-    public static void main(String[] args) throws IOException {
+    public static void execute() throws IOException {
         System.out.println("Please, enter stupid combination of letters and numbers:");
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         String line = bf.readLine();

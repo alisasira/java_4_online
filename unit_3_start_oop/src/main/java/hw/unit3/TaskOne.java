@@ -6,7 +6,8 @@ import java.io.InputStreamReader;
 
 
 public class TaskOne {
-    public static void main(String[] args) throws IOException {
+
+    public static void execute() throws IOException {
         System.out.println("Please, enter stupid combination of letters and numbers:");
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         String input = bf.readLine();
