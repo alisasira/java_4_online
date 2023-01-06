@@ -11,8 +11,7 @@ public class DbStorage {
     private static Car[] cars = new Car[capacity];
     private static int index = 0;
 
-    private DbStorage() {
-    }
+    private DbStorage() {}
 
 
     private static String generateClientId() {
