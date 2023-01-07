@@ -4,6 +4,7 @@ import hw5.db.DbStorage;
 import hw5.entity.Car;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CarDaoImpl implements CarDao {
     DbStorage dbStorage = DbStorage.getInstance();
@@ -21,15 +22,21 @@ public class CarDaoImpl implements CarDao {
     @Override
     public void delete(String id) {
         dbStorage.deleteCar(id);
+        dbStorage.deleteCarFromClientList(id);
     }
 
     @Override
-    public Car findById(String id) {
-        return dbStorage.carFindById(id).get();
+    public Optional<Car> findById(String id) {
+        return dbStorage.carFindById(id);
     }
 
     @Override
     public List<Car> findAll() {
-        return dbStorage.carFindAll();
+        return dbStorage.findAllCars();
+    }
+
+    @Override
+    public void attach(String clientId, String carId) {
+        dbStorage.attach(clientId, carId);
     }
 }

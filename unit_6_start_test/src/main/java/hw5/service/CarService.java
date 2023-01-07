@@ -6,6 +6,7 @@ import hw5.entity.Car;
 import hw5.entity.Client;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CarService {
     private CarDaoImpl carDao = new CarDaoImpl();
@@ -20,10 +21,21 @@ public class CarService {
         carDao.delete(id);
     }
     public Car findById(String id){
-        return carDao.findById(id);
+        Optional<Car> car = carDao.findById(id);
+        return car.orElse(null);
     }
     public List<Car> findAll(){
         return carDao.findAll();
     }
+
+    public void attach(String clientId, String carId) {
+        if (clientId == null || carId == null) {
+            System.out.println("This ID does not exist.");
+        } else {
+            carDao.attach(clientId, carId);
+            System.out.println("Attachment is successful.");
+        }
+    }
+
 }
 

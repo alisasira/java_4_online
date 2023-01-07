@@ -64,25 +64,25 @@ public class ClientController {
                findAllCars();
                 break;
             case "7":
-                //updateClient(reader);
+                updateClient(reader);
                 break;
             case "8":
-               // updateCar(reader);
+               updateCar(reader);
                 break;
             case "9":
-                //attachClientToCar(reader);
+                attachClientToCar(reader);
                 break;
             case "10":
-                //attachCarToClient(reader);
+                attachCarToClient(reader);
                 break;
             case "11":
-                //deleteClient(reader);
+                deleteClient(reader);
                 break;
             case "12":
-                //deleteCar(reader);
+                deleteCar(reader);
                 break;
             case "13":
-                //stop();
+                stop();
                 break;
             case "":
                 break;
@@ -117,7 +117,7 @@ public class ClientController {
     private void findClient(BufferedReader reader) throws IOException {
         System.out.println("To find the client please enter client's ID:");
         String clientId = reader.readLine();
-       Optional<Client> client = DbStorage.getClient(clientId);
+       Client client = clientService.findById(clientId);
         if(client == null){
             System.out.println("This client does not exist.");
         } else {
@@ -127,7 +127,7 @@ public class ClientController {
     private void findCar(BufferedReader reader) throws IOException {
         System.out.println("To find the car please enter car's ID:");
         String carId = reader.readLine();
-        Optional<Car> car = DbStorage.getCar(carId);
+        Car car = carService.findById(carId);
         if(car == null){
             System.out.println("This car does not exist.");
         } else {
@@ -147,7 +147,7 @@ public class ClientController {
     private void updateClient(BufferedReader reader) throws IOException {
         System.out.println("Let's update client's information. To start, please enter client's ID:");
         String clientId = reader.readLine();
-        Optional<Client> client = DbStorage.getClient(clientId);
+        Optional<Client> client = DbStorage.getInstance().getClient(clientId);
         if(client.isEmpty()){
             System.out.println("This client does not exist.");
         } else {
@@ -175,5 +175,35 @@ public class ClientController {
             car.get().setCarModel(carModel);
             System.out.println("Thank you, the car's information is updated.");
         }
+    }
+    private void attachClientToCar(BufferedReader reader) throws IOException {
+        System.out.println("Let's attach the client to car. To start, please enter client's ID:");
+        String clientId = reader.readLine();
+        System.out.println("Then please enter car's ID:");
+        String carId = reader.readLine();
+        clientService.attach(clientId, carId);
+    }
+    private void attachCarToClient(BufferedReader reader) throws IOException {
+        System.out.println("Let's attach the car to client. To start, please enter car's ID:");
+        String carId = reader.readLine();
+        System.out.println("Then please enter client's ID:");
+        String clientId = reader.readLine();
+        carService.attach(clientId, carId);
+    }
+    private void deleteClient(BufferedReader reader) throws IOException {
+        System.out.println("To delete the client please enter his ID:");
+        String clientId = reader.readLine();
+        clientService.delete(clientId);
+        System.out.println("The client is deleted.");
+    }
+    private void deleteCar(BufferedReader reader) throws IOException {
+        System.out.println("To delete the car please enter it's ID:");
+        String carId = reader.readLine();
+        carService.delete(carId);
+        System.out.println("The car is deleted.");
+    }
+
+    private void stop() {
+        System.exit(0);
     }
 }
