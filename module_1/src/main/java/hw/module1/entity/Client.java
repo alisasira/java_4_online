@@ -3,6 +3,7 @@ package hw.module1.entity;
 import java.util.Arrays;
 
 public class Client extends BaseEntity {
+
     private String firstName;
     private String lastName;
     private String[] carIdList = new String[10];

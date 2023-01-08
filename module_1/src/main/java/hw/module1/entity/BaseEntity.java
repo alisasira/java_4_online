@@ -1,6 +1,7 @@
 package hw.module1.entity;
 
 public abstract class BaseEntity {
+
     private String id;
 
     public String getId() {
