@@ -28,7 +28,7 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public Optional<Client> findById(String id) {
-        return dbStorage.clientFindById(id);
+        return dbStorage.getClient(id);
     }
 
     @Override

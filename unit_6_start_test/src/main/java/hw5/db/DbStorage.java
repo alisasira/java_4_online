@@ -6,8 +6,8 @@ import hw5.entity.Client;
 import java.util.*;
 
 public class DbStorage {
-    private static Set<Client> clients = new HashSet<>();
-    private static Set<Car> cars = new HashSet<>();
+    private Set<Client> clients = new HashSet<>();
+    private Set<Car> cars = new HashSet<>();
     private static DbStorage instance;
 
     private DbStorage() {
@@ -18,6 +18,11 @@ public class DbStorage {
             instance = new DbStorage();
         }
         return instance;
+    }
+
+    public void clean() {
+        clients = new HashSet<>();
+        cars = new HashSet<>();
     }
 
     private String generateClientId() {
@@ -43,9 +48,11 @@ public class DbStorage {
         return id;
     }
 
-    public void addCar(Car car) {
-        car.setId(generateClientId());
+    public String addCar(Car car) {
+        String id = generateCarId();
+        car.setId(id);
         cars.add(car);
+        return id;
     }
 
     public List<Client> findAllClients() {
@@ -63,7 +70,7 @@ public class DbStorage {
                 findFirst();
     }
 
-    public static Optional<Car> getCar(String id) {
+    public Optional<Car> getCar(String id) {
         return cars.
                 stream().
                 filter(car -> car.getId().equals(id)).
@@ -77,7 +84,6 @@ public class DbStorage {
     private void attachClientToCar(String clientId, String carId) {
         getCar(carId).ifPresent(it -> {
             Set<String> clients = it.getClientIdList();
-          //  Set<String> clients = car.getClientIdList();
             clients.add(clientId);
         });
     }
@@ -90,6 +96,7 @@ public class DbStorage {
     }
 
     public void updateClient(Client client) {
+        clients.remove(client);
         clients.add(client);
     }
 
@@ -97,26 +104,11 @@ public class DbStorage {
         cars.add(car);
     }
 
-    public Optional<Client> clientFindById(String id) {
-        return clients
-                .stream()
-                .filter(client -> client.getId().equals(id))
-                .findFirst();
-    }
-
-    public Optional<Car> carFindById(String id) {
-        return cars
-                .stream()
-                .filter(car -> car.getId().equals(id))
-                .findFirst();
-    }
-
-    public static void deleteClient(String id) {
-
+    public void deleteClient(String id) {
         clients.removeIf(client -> client.getId().equals(id));
     }
 
-    public static void deleteCar(String id) {
+    public void deleteCar(String id) {
         cars.removeIf(car -> car.getId().equals(id));
     }
 

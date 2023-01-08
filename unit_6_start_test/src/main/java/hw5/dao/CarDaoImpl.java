@@ -27,7 +27,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public Optional<Car> findById(String id) {
-        return dbStorage.carFindById(id);
+        return dbStorage.getCar(id);
     }
 
     @Override

@@ -163,7 +163,7 @@ public class ClientController {
     private void updateCar(BufferedReader reader) throws IOException {
         System.out.println("Let's update car's information. To start, please enter car's ID:");
         String carId = reader.readLine();
-        Optional<Car> car = DbStorage.getCar(carId);
+        Optional<Car> car = DbStorage.getInstance().getCar(carId);
         if(car.isEmpty()){
             System.out.println("This car does not exist.");
         } else {
