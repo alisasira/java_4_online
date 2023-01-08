@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class DbStorage {
+
     private static int capacity = 10;
     private static Client[] clients = new Client[capacity];
     private static Car[] cars = new Car[capacity];
@@ -13,12 +14,11 @@ public class DbStorage {
 
     private DbStorage() {}
 
-
     private static String generateClientId() {
         String id = UUID.randomUUID().toString();
-        for (int i = 0; i < clients.length; i++) {
-            if (clients[i] != null) {
-                if (clients[i].getId().equals(id)) {
+        for (Client client : clients) {
+            if (client != null) {
+                if (client.getId().equals(id)) {
                     return generateClientId();
                 }
             }
@@ -29,8 +29,7 @@ public class DbStorage {
     public static void addClient(Client client) {
         client.setId(generateClientId());
         if (index == clients.length) {
-            Client[] temp = Arrays.copyOf(clients, clients.length + capacity);
-            clients = temp;
+            clients = Arrays.copyOf(clients, clients.length + capacity);
         }
         clients[index] = client;
         index++;
@@ -38,9 +37,9 @@ public class DbStorage {
 
     private static String generateCarId() {
         String id = UUID.randomUUID().toString();
-        for (int i = 0; i < cars.length; i++) {
-            if (cars[i] != null) {
-                if (cars[i].getId().equals(id)) {
+        for (Car car : cars) {
+            if (car != null) {
+                if (car.getId().equals(id)) {
                     return generateClientId();
                 }
             }
@@ -51,8 +50,7 @@ public class DbStorage {
     public static void addCar(Car car) {
         car.setId(generateCarId());
         if (index == cars.length) {
-            Car[] temp = Arrays.copyOf(cars, cars.length + capacity);
-            cars = temp;
+            cars = Arrays.copyOf(cars, cars.length + capacity);
         }
         cars[index] = car;
         index++;
@@ -67,10 +65,10 @@ public class DbStorage {
     }
 
     public static Client getClient(String id) {
-        for (int i = 0; i < clients.length; i++) {
-            if (clients[i] != null) {
-                if (clients[i].getId().equals(id)) {
-                    return clients[i];
+        for (Client client : clients) {
+            if (client != null) {
+                if (client.getId().equals(id)) {
+                    return client;
                 }
             }
         }
@@ -117,10 +115,10 @@ public class DbStorage {
     }
 
     public static Car getCar(String id) {
-        for (int i = 0; i < cars.length; i++) {
-            if (cars[i] != null) {
-                if (cars[i].getId().equals(id)) {
-                    return cars[i];
+        for (Car car : cars) {
+            if (car != null) {
+                if (car.getId().equals(id)) {
+                    return car;
                 }
             }
         }
