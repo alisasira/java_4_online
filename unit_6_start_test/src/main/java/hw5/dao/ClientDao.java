@@ -7,7 +7,8 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface ClientDao {
-    void create(Client client);
+
+    String create(Client client);
 
     void update(Client client);
 

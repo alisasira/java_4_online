@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ClientController {
+
     private ClientService clientService = new ClientService();
     private CarService carService = new CarService();
 
@@ -27,7 +28,8 @@ public class ClientController {
             menu();
         }
     }
-    private void menu(){
+
+    private void menu() {
         System.out.println("\nIf You want to create a new client, please enter 1");
         System.out.println("If You want to create a new car, please enter 2");
         System.out.println("If You want to find a client, please enter 3");
@@ -44,7 +46,7 @@ public class ClientController {
     }
 
     private void crud(BufferedReader reader, String input) throws IOException {
-        switch (input){
+        switch (input) {
             case "1":
                 createClient(reader);
                 break;
@@ -52,7 +54,7 @@ public class ClientController {
                 createCar(reader);
                 break;
             case "3":
-               findClient(reader);
+                findClient(reader);
                 break;
             case "4":
                 findCar(reader);
@@ -61,13 +63,13 @@ public class ClientController {
                 findAllClients();
                 break;
             case "6":
-               findAllCars();
+                findAllCars();
                 break;
             case "7":
                 updateClient(reader);
                 break;
             case "8":
-               updateCar(reader);
+                updateCar(reader);
                 break;
             case "9":
                 attachClientToCar(reader);
@@ -90,6 +92,7 @@ public class ClientController {
                 System.out.println("Something went wrong... Try again please");
         }
     }
+
     private void createClient(BufferedReader reader) throws IOException {
         System.out.println("Let's create a new client.");
         System.out.println("Please enter client's first name:");
@@ -102,6 +105,7 @@ public class ClientController {
         clientService.create(client);
         System.out.println("New client is created. His/her ID is " + client.getId());
     }
+
     private void createCar(BufferedReader reader) throws IOException {
         System.out.println("Let's create a new car.");
         System.out.println("Please enter car's model:");
@@ -112,59 +116,69 @@ public class ClientController {
         car.setCarModel(carModel);
         car.setCarNumber(carNumber);
         carService.create(car);
-        System.out.println("New car is created. It's ID is "+ car.getId());
+        System.out.println("New car is created. It's ID is " + car.getId());
     }
+
     private void findClient(BufferedReader reader) throws IOException {
         System.out.println("To find the client please enter client's ID:");
         String clientId = reader.readLine();
-       Client client = clientService.findById(clientId);
-        if(client == null){
+        Client client = clientService.findById(clientId);
+        if (client == null) {
             System.out.println("This client does not exist.");
         } else {
             System.out.println(client);
         }
     }
+
     private void findCar(BufferedReader reader) throws IOException {
         System.out.println("To find the car please enter car's ID:");
         String carId = reader.readLine();
         Car car = carService.findById(carId);
-        if(car == null){
+        if (car == null) {
             System.out.println("This car does not exist.");
         } else {
             System.out.println(car);
         }
     }
-    private void findAllClients(){
+
+    private void findAllClients() {
         System.out.println("Clients list:");
         List<Client> clients = clientService.findAll();
         System.out.println("clients = " + clients);
     }
-    private void findAllCars(){
+
+    private void findAllCars() {
         System.out.println("Cars list:");
         List<Car> cars = carService.findAll();
         System.out.println("cars = " + cars);
     }
+
     private void updateClient(BufferedReader reader) throws IOException {
         System.out.println("Let's update client's information. To start, please enter client's ID:");
         String clientId = reader.readLine();
-        Optional<Client> client = DbStorage.getInstance().getClient(clientId);
-        if(client.isEmpty()){
+        Optional<Client> existing = DbStorage.getInstance().getClient(clientId);
+        if (existing.isEmpty()) {
             System.out.println("This client does not exist.");
         } else {
+            Client client = existing.get();
+
             System.out.println("Please enter client's first name:");
             String firstName = reader.readLine();
-            client.get().setFirstName(firstName);
+            client.setFirstName(firstName);
             System.out.println("Please enter client's last name:");
             String lastName = reader.readLine();
-            client.get().setLastName(lastName);
+            client.setLastName(lastName);
+
+            clientService.update(client);
             System.out.println("Thank you, the client's information is updated.");
         }
     }
+
     private void updateCar(BufferedReader reader) throws IOException {
         System.out.println("Let's update car's information. To start, please enter car's ID:");
         String carId = reader.readLine();
         Optional<Car> car = DbStorage.getInstance().getCar(carId);
-        if(car.isEmpty()){
+        if (car.isEmpty()) {
             System.out.println("This car does not exist.");
         } else {
             System.out.println("Please enter car's number:");
@@ -176,6 +190,7 @@ public class ClientController {
             System.out.println("Thank you, the car's information is updated.");
         }
     }
+
     private void attachClientToCar(BufferedReader reader) throws IOException {
         System.out.println("Let's attach the client to car. To start, please enter client's ID:");
         String clientId = reader.readLine();
@@ -183,6 +198,7 @@ public class ClientController {
         String carId = reader.readLine();
         clientService.attach(clientId, carId);
     }
+
     private void attachCarToClient(BufferedReader reader) throws IOException {
         System.out.println("Let's attach the car to client. To start, please enter car's ID:");
         String carId = reader.readLine();
@@ -190,12 +206,14 @@ public class ClientController {
         String clientId = reader.readLine();
         carService.attach(clientId, carId);
     }
+
     private void deleteClient(BufferedReader reader) throws IOException {
         System.out.println("To delete the client please enter his ID:");
         String clientId = reader.readLine();
         clientService.delete(clientId);
         System.out.println("The client is deleted.");
     }
+
     private void deleteCar(BufferedReader reader) throws IOException {
         System.out.println("To delete the car please enter it's ID:");
         String carId = reader.readLine();

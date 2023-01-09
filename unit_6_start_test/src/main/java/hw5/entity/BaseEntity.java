@@ -3,6 +3,7 @@ package hw5.entity;
 import java.util.Objects;
 
 public abstract class BaseEntity {
+
     private String id;
 
     public String getId() {

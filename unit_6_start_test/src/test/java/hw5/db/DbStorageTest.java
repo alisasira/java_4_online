@@ -3,7 +3,6 @@ package hw5.db;
 import hw5.entity.Car;
 import hw5.entity.Client;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,10 +35,8 @@ public class DbStorageTest {
         String FIRST_NAME = "Alex";
         String LAST_NAME = "Test";
 
-        //1. Method invocation
         String id = storage.addClient(makeClient(FIRST_NAME, LAST_NAME));
 
-        //2. Check result
         Optional<Client> result = storage.findAllClients().stream().filter(it -> it.getId().equals(id)).findFirst();
 
         Assertions.assertTrue(result.isPresent());
@@ -49,8 +46,9 @@ public class DbStorageTest {
             Assertions.assertEquals(LAST_NAME, client.getLastName());
         }
     }
+
     @Test
-    public void testAddCar(){
+    public void testAddCar() {
         String CAR_NUMBER = "AA1234BB";
         String CAR_MODEL = "Tesla";
         String id = storage.addCar(makeCar(CAR_NUMBER, CAR_MODEL));
@@ -64,12 +62,21 @@ public class DbStorageTest {
     }
 
     @Test
-    public void findAllClients(){
+    public void findAllClients() {
         List<Client> result = storage.findAllClients();
         Optional<Client> item = result.stream().filter(it -> it.getId().equals(defaultClientId)).findFirst();
 
         Assertions.assertTrue(item.isPresent());
         Assertions.assertEquals(DEFAULT_FIRST_NAME, item.get().getFirstName());
+    }
+
+    @Test
+    public void findAllCars() {
+        List<Car> result = storage.findAllCars();
+        Optional<Car> item = result.stream().filter(it -> it.getId().equals(defaultCartId)).findFirst();
+
+        Assertions.assertTrue(item.isPresent());
+        Assertions.assertEquals(DEFAULT_MODEL, item.get().getCarModel());
     }
 
     @Test
@@ -79,7 +86,13 @@ public class DbStorageTest {
     }
 
     @Test
-    public void attach(){
+    public void getCar() {
+        Optional<Car> result = storage.getCar(defaultCartId);
+        Assertions.assertTrue(result.isPresent());
+    }
+
+    @Test
+    public void attach() {
         storage.attach(defaultClientId, defaultCartId);
 
         Optional<Client> client = storage.getClient(defaultClientId);
@@ -99,10 +112,21 @@ public class DbStorageTest {
         Optional<Client> client = storage.getClient(defaultClientId);
         Assertions.assertTrue(client.isPresent());
 
-        Assertions.assertEquals("Fire",client.get().getLastName());
+        Assertions.assertEquals("Fire", client.get().getLastName());
     }
+
     @Test
-    public void deleteClient(){
+    public void testUpdateCar() {
+        storage.updateCar(makeCar(defaultCartId, DEFAULT_NUMBER, "BMW"));
+
+        Optional<Car> car = storage.getCar(defaultCartId);
+        Assertions.assertTrue(car.isPresent());
+
+        Assertions.assertEquals("BMW", car.get().getCarModel());
+    }
+
+    @Test
+    public void deleteClient() {
         storage.deleteClient(defaultClientId);
         storage.deleteClientFromCarList(defaultClientId);
 
@@ -112,11 +136,22 @@ public class DbStorageTest {
         Optional<Car> car = storage.getCar(defaultCartId);
         Assertions.assertTrue(car.isPresent());
         Assertions.assertTrue(car.get().getClientIdList().isEmpty());
+    }
 
+    @Test
+    public void deleteCar() {
+        storage.deleteCar(defaultCartId);
+        storage.deleteCarFromClientList(defaultCartId);
+
+        Optional<Car> car = storage.getCar(defaultCartId);
+        Assertions.assertFalse(car.isPresent());
+
+        Optional<Client> client = storage.getClient(defaultClientId);
+        Assertions.assertTrue(client.isPresent());
+        Assertions.assertTrue(client.get().getCarIdList().isEmpty());
     }
 
     private Client makeClient(String firstName, String lastName) {
-
         return makeClient(null, firstName, lastName);
     }
 
@@ -127,16 +162,16 @@ public class DbStorageTest {
         client.setLastName(lastName);
         return client;
     }
-    private Car makeCar(String id, String carNumber, String carModel){
+
+    private Car makeCar(String id, String carNumber, String carModel) {
         Car car = new Car();
         car.setId(id);
         car.setCarNumber(carNumber);
         car.setCarModel(carModel);
         return car;
     }
+
     private Car makeCar(String carNumber, String carModel) {
         return makeCar(null, carNumber, carModel);
     }
-
-
 }

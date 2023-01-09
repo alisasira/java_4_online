@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Car extends BaseEntity {
+
     private String carNumber;
     private String carModel;
     private Set<String> clientIdList = new HashSet<>();

@@ -6,6 +6,7 @@ import hw5.entity.Client;
 import java.util.*;
 
 public class DbStorage {
+
     private Set<Client> clients = new HashSet<>();
     private Set<Car> cars = new HashSet<>();
     private static DbStorage instance;
@@ -81,6 +82,7 @@ public class DbStorage {
         attachClientToCar(clientId, carId);
         attachCarToClient(clientId, carId);
     }
+
     private void attachClientToCar(String clientId, String carId) {
         getCar(carId).ifPresent(it -> {
             Set<String> clients = it.getClientIdList();
@@ -101,6 +103,7 @@ public class DbStorage {
     }
 
     public void updateCar(Car car) {
+        cars.remove(car);
         cars.add(car);
     }
 

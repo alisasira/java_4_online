@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Client extends BaseEntity {
+
     private String firstName;
     private String lastName;
     private Set<String> carIdList = new HashSet<>();
@@ -31,8 +32,6 @@ public class Client extends BaseEntity {
     public Set<String> getCarIdList() {
         return carIdList;
     }
-
-
 
     @Override
     public String toString() {

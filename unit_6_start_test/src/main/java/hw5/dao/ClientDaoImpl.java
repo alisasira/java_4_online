@@ -8,11 +8,12 @@ import java.util.Optional;
 import java.util.Set;
 
 public class ClientDaoImpl implements ClientDao {
+
     DbStorage dbStorage = DbStorage.getInstance();
 
     @Override
-    public void create(Client client) {
-        dbStorage.addClient(client);
+    public String create(Client client) {
+        return dbStorage.addClient(client);
     }
 
     @Override

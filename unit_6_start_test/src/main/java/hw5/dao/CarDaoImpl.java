@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CarDaoImpl implements CarDao {
+
     DbStorage dbStorage = DbStorage.getInstance();
 
     @Override

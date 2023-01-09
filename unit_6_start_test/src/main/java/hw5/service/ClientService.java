@@ -9,22 +9,35 @@ import java.util.Optional;
 import java.util.Set;
 
 public class ClientService {
+
     private ClientDaoImpl clientDao = new ClientDaoImpl();
 
-    public void create(Client client){
-        clientDao.create(client);
+    public String create(Client client) {
+        if(!validateFirstName(client.getFirstName()) || !validateLastName(client.getLastName())) {
+            System.out.println("Incorrect information. Name can't contain numbers.");
+            return null;
+        }
+        return clientDao.create(client);
     }
-    public void update(Client client){
+
+    public void update(Client client) {
+        if(!validateFirstName(client.getFirstName()) || !validateLastName(client.getLastName())) {
+            System.out.println("Incorrect information. First name can't contain numbers.");
+            return;
+        }
         clientDao.update(client);
     }
-    public void delete(String id){
+
+    public void delete(String id) {
         clientDao.delete(id);
     }
-    public Client findById(String id){
+
+    public Client findById(String id) {
         Optional<Client> client = clientDao.findById(id);
         return client.orElse(null);
     }
-    public List<Client> findAll(){
+
+    public List<Client> findAll() {
         return clientDao.findAll();
     }
 
@@ -37,4 +50,11 @@ public class ClientService {
         }
     }
 
+    private boolean validateFirstName(String firstName) {
+        return firstName.matches("[A-Za-z]+");
+    }
+
+    private boolean validateLastName(String lastName){
+        return lastName.matches("[A-Za-z]+");
+    }
 }
