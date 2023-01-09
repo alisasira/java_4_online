@@ -20,14 +20,14 @@ public class DbStorageTest {
     private static final String DEFAULT_MODEL = "Tesla";
 
     private String defaultClientId;
-    private String defaultCartId;
+    private String defaultCarId;
 
     @BeforeEach
     public void setup() {
         storage.clean();
 
         defaultClientId = storage.addClient(makeClient(DEFAULT_FIRST_NAME, DEFAULT_LAST_NAME));
-        defaultCartId = storage.addCar(makeCar(DEFAULT_NUMBER, DEFAULT_MODEL));
+        defaultCarId = storage.addCar(makeCar(DEFAULT_NUMBER, DEFAULT_MODEL));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class DbStorageTest {
     @Test
     public void findAllCars() {
         List<Car> result = storage.findAllCars();
-        Optional<Car> item = result.stream().filter(it -> it.getId().equals(defaultCartId)).findFirst();
+        Optional<Car> item = result.stream().filter(it -> it.getId().equals(defaultCarId)).findFirst();
 
         Assertions.assertTrue(item.isPresent());
         Assertions.assertEquals(DEFAULT_MODEL, item.get().getCarModel());
@@ -87,22 +87,22 @@ public class DbStorageTest {
 
     @Test
     public void getCar() {
-        Optional<Car> result = storage.getCar(defaultCartId);
+        Optional<Car> result = storage.getCar(defaultCarId);
         Assertions.assertTrue(result.isPresent());
     }
 
     @Test
     public void attach() {
-        storage.attach(defaultClientId, defaultCartId);
+        storage.attach(defaultClientId, defaultCarId);
 
         Optional<Client> client = storage.getClient(defaultClientId);
         Assertions.assertTrue(client.isPresent());
 
-        Optional<Car> car = storage.getCar(defaultCartId);
+        Optional<Car> car = storage.getCar(defaultCarId);
         Assertions.assertTrue(car.isPresent());
 
         Assertions.assertTrue(car.get().getClientIdList().contains(defaultClientId));
-        Assertions.assertTrue(client.get().getCarIdList().contains(defaultCartId));
+        Assertions.assertTrue(client.get().getCarIdList().contains(defaultCarId));
     }
 
     @Test
@@ -117,9 +117,9 @@ public class DbStorageTest {
 
     @Test
     public void testUpdateCar() {
-        storage.updateCar(makeCar(defaultCartId, DEFAULT_NUMBER, "BMW"));
+        storage.updateCar(makeCar(defaultCarId, DEFAULT_NUMBER, "BMW"));
 
-        Optional<Car> car = storage.getCar(defaultCartId);
+        Optional<Car> car = storage.getCar(defaultCarId);
         Assertions.assertTrue(car.isPresent());
 
         Assertions.assertEquals("BMW", car.get().getCarModel());
@@ -133,17 +133,17 @@ public class DbStorageTest {
         Optional<Client> client = storage.getClient(defaultClientId);
         Assertions.assertFalse(client.isPresent());
 
-        Optional<Car> car = storage.getCar(defaultCartId);
+        Optional<Car> car = storage.getCar(defaultCarId);
         Assertions.assertTrue(car.isPresent());
         Assertions.assertTrue(car.get().getClientIdList().isEmpty());
     }
 
     @Test
     public void deleteCar() {
-        storage.deleteCar(defaultCartId);
-        storage.deleteCarFromClientList(defaultCartId);
+        storage.deleteCar(defaultCarId);
+        storage.deleteCarFromClientList(defaultCarId);
 
-        Optional<Car> car = storage.getCar(defaultCartId);
+        Optional<Car> car = storage.getCar(defaultCarId);
         Assertions.assertFalse(car.isPresent());
 
         Optional<Client> client = storage.getClient(defaultClientId);
